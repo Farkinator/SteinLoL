@@ -4,18 +4,20 @@ import requests
 #### 					PLEASE READ THE README.TXT					  ####
 ####					FOR AN EXPLANATION OF CODE					  ####	
 ##########################################################################
-def processSpell(spell, attack, ability, cdr):
-	(efficiency, maxdamage, apscale, adscale, base, dps) = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+
+def processSpell(spell, attack, ability, cdr, is1v1):
+	(dam_eff, maxdamage, apscale, adscale, base, dps, manacost) = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 	#Basically, ignore toggles for now.
 	maxrank = spell["maxrank"]
 	cd = spell["cooldown"][maxrank-1] * ((100-cdr)/100)
+	s_cost = spell["cost"][maxrank-1]
 	if spell["costType"] == ("Mana" or "Health" or "Heat" or "Energy"):
 		
 
 		
 		#If the damage field is null, then our damage is 0.
 		if spell["effect"][1] == None:
-			return {"dps": dps, "maxd": maxdamage, "ap": apscale, "ad": adscale, "base": base, "efficiency": efficiency, "cd":cd}
+			return {"dps": dps, "maxd": maxdamage, "ap": apscale, "ad": adscale, "base": base, "dam_eff": dam_eff, "cd":cd}
 		else:
 			#Here we go boys. 
 			base = spell["effect"][1][maxrank-1]
@@ -32,12 +34,14 @@ def processSpell(spell, attack, ability, cdr):
 			#This is the most basic measure I could come up with. Damage/Cooldown = dps.
 			if cd != 0:
 				dps = maxdamage/cd
-			
+				if s_cost != 0:
+					dam_eff = dps/s_cost
 
 
-			return {"dps": dps, "maxd": maxdamage, "ap": apscale, "ad": adscale, "base": base, "efficiency": efficiency, "cd":cd}
+
+			return {"dps": dps, "maxd": maxdamage, "ap": apscale, "ad": adscale, "base": base, "dam_eff": dam_eff, "cd":cd}
 	else:
-		return {"dps": dps, "maxd": maxdamage, "ap": apscale, "ad": adscale, "base": base, "efficiency": efficiency, "cd":cd}
+		return {"dps": dps, "maxd": maxdamage, "ap": apscale, "ad": adscale, "base": base, "dam_eff": dam_eff, "cd":cd}
 
 
 
@@ -51,28 +55,29 @@ ad_in = float(raw_input("And now for your Attack Damage (AD):\n"))
 cdr_in = float(raw_input("Finally, enter your Cooldown Reduction (CDR) as a percent, not a decimal:\n"))
 if cdr_in > 0 and cdr_in < 1:
 	cdr_in = float(raw_input("CDR was malformed (You probably entered it as a decimal, not a whole number). Please try again: \n"))
+is1v1 = bool(raw_input("1v1(true) or Teamfight?(false)"))
 #And now, let requests work its magic!
 key = "4a956ce8-2409-442a-a003-8f2784580237"
 r = requests.get('https://na.api.pvp.net/api/lol/static-data/na/v1.2/champion?champData=spells&api_key='+key)
 champList= r.json()["data"]
 
 #This is for fun purposes only. I like to see where the numbers are coming from.
-final_dict = {"dps":0, "maxd":0, "ap":0, "ad":0, "base":0, "efficiency": 0, "cd":0}
+final_dict = {"dps":0, "maxd":0, "ap":0, "ad":0, "base":0, "dam_eff": 0, "cd":0}
 maxname=""
-templist = {"dps":0, "maxd":0, "ap":0, "ad":0, "base":0, "efficiency": 0, "cd":0}
+templist = {"dps":0, "maxd":0, "ap":0, "ad":0, "base":0, "dam_eff": 0, "cd":0}
 #So, obviously doing this linearly is the best option. O(n*4) is the best I can do since
 #I have to look at every single spell in the game 
 for k, v in champList.iteritems():
 	#Iterate through this champion's spells
 	for i in v["spells"]:
 		#process the spell
-		tempdict = processSpell(i, ad_in, ap_in, cdr_in)
-		#if the efficiency is higher, then overwrite our running max.
-		if  tempdict["dps"] > final_dict["dps"]:
+		tempdict = processSpell(i, ad_in, ap_in, cdr_in, is1v1)
+		#if the dam_eff is higher, then overwrite our running max.
+		if  tempdict["dam_eff"] > final_dict["dam_eff"]:
 		 	final_dict = tempdict
 		 	#store the name for pretty-factor.
 		 	maxname = i["name"]
 
 
-print maxname + ": %.2f (%.2f + %.2f(AP) + %.2f(AD)) / %.2f(CD)" % (final_dict["dps"], final_dict["base"], final_dict["ap"], final_dict["ad"], final_dict["cd"])
+print maxname + ": %.2f (%.2f + %.2f(AP) + %.2f(AD)) / %.2f(CD)" % (final_dict["dam_eff"], final_dict["base"], final_dict["ap"], final_dict["ad"], final_dict["cd"])
 
