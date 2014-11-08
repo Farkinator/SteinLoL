@@ -27,11 +27,12 @@ def processSpell(spell, attack, ability, cdr):
 						apscale = ability*i["coeff"][0] #Bonus damage = AP*APc
 					elif i["link"] == "attackdamage":
 						adscale = attack*i["coeff"][0] #Bonus damage = AD * ADc
+			#So we have our maxdamage! maxdamage != efficient, however. More calculations to come.
 			maxdamage = base+apscale+adscale
 			#This is the most basic measure I could come up with. Damage/Cooldown = dps.
 			if cd != 0:
 				dps = maxdamage/cd
-			#So we have our maxdamage! maxdamage != efficient, however. More calculations to come.
+			
 
 
 			return {"dps": dps, "maxd": maxdamage, "ap": apscale, "ad": adscale, "base": base, "efficiency": efficiency, "cd":cd}

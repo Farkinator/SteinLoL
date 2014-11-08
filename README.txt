@@ -71,11 +71,14 @@ a certain spell. A high Stat Efficiency is a good thing.
 DoT's don't normally stack. If it is a DoT, the duration of the DoT is added to the cooldown
 in a 1v1 situation.
 
+Teamfight scenario or 1v1?:
+	* 
+
 AoE DoT (Lookin at you, Tormented Soil/Absolute Zero): an interesting problem. Will get to it on Sunday.
-Two profiles(?):
+Three profiles(?):
 	* Optimistic: full duration, enemies stand in it the AoE for full duration
 	* Realistic: Half duration :)
-	* Mean: minimum duration. You missed your chance, bub.
+	* Mean: minimum duration (1 tick). You missed big-time, bub.
 
 
 
