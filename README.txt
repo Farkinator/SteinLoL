@@ -96,12 +96,13 @@ Dealing with Charges?
 	recharge is better!
 
 Twisted Fate's Pick a Card:
-	* Pick a Card is super weird. Obviously I can't say its cooldown is only 6 seconds,
-	that would be ludicrous. Abusing the nature of TF's Pick A Card and assuming perfect 
-	play (Really, how hard is it to draw anymore? Back when GC was imba, sure, but now
-	not so much.), it will take 0, 1, and then 2 cycles, each a second long. So, 1/3 of 
-	the time it takes 0, 1, 2 seconds to pick the card you want. Meaning the average
-	time to pick a card is 1 second.
+	* Pick a Card is super weird. Obviously I can't say its cooldown is only
+	6 seconds, that would be ludicrous. Abusing the nature of TF's Pick A 
+	Card and assuming perfect play (Really, how hard is it to draw anymore? 
+	Back when GC was imba, sure, but now not so much.), it will take 0, 1,
+	and then 2 cycles, each a second long. So, 1/3 of the time it takes 0, 1,
+	2 seconds to pick the card you want. Meaning the average time to pick a 
+	card is 1 second.
 
 
 I was going to add AoE/DoT considerations, but there's no way of reliably accessing
