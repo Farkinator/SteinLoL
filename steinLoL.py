@@ -17,9 +17,11 @@ def processSpell(spell, attack, ability, cdr):
 		charge_penalty = (8*((100-cdr)/100))/7
 	elif spell["key"] == "ViE":
 		charge_penalty = (8*((100-cdr)/100))/2
+	elif spell["key"] == "BantamTrap":
+		charge_penalty = (27*((100-cdr)/100))/3
 	cd *= ((100-cdr)/100)
 	cd += charge_penalty
-	# Read the section on this in the README under "Considerations"
+	# Read the section on this in the README under "Considerations". +1 makes it look way simpler than it actually is.
 	if spell["key"] == "PickACard":
 		cd+=1
 
